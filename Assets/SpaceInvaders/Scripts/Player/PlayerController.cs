@@ -19,8 +19,7 @@ namespace SpaceInvaders.Player
 
         private void Awake()
         {
-            _input = new InputReader();
-            _input.EnableMainInput();
+            _input = GameManager.Input;
 
             _collider = GetComponent<BoxCollider2D>();
             _rigidbody = GetComponent<Rigidbody2D>();
