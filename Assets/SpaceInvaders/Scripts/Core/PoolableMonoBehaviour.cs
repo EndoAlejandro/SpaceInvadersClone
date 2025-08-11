@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SpaceInvaders.Player
+namespace SpaceInvaders.Core
 {
     public abstract class PoolableMonoBehaviour : MonoBehaviour
     {

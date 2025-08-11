@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SpaceInvaders.Core;
+using UnityEngine;
 
 namespace SpaceInvaders.Player
 {
