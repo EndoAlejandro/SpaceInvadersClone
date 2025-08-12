@@ -11,6 +11,7 @@ namespace SpaceInvaders.Player
         
         [SerializeField] private PlayerProjectile _playerProjectile;
         [SerializeField] private float _speed;
+        [SerializeField] private float _projectileVerticalOffset = .5f;
 
         private Pool _pool;
         private bool _canShoot = true;
@@ -26,7 +27,7 @@ namespace SpaceInvaders.Player
 
             _canShoot = false;
             var projectile = _pool.PoolObject<PlayerProjectile>();
-            projectile.Setup(transform.position, _speed, OnProjectileDestroyed);
+            projectile.Setup(transform.position + Vector3.up * _projectileVerticalOffset, _speed, OnProjectileDestroyed);
             OnShot?.Invoke();
         }
 

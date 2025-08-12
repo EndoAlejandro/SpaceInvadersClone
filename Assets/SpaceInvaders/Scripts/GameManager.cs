@@ -8,6 +8,7 @@ namespace SpaceInvaders
     public static class GameManager
     {
         public static event Action<int> OnScoreUpdated;
+        public static event Action<bool> OnGamePaused;
         
         private static InputReader _input;
 
@@ -48,6 +49,7 @@ namespace SpaceInvaders
             Level = 1;
             Score = 0;
             Lives = 3;
+            ResumeGame();
         }
 
         public static void GoToMainMenu()
@@ -93,6 +95,18 @@ namespace SpaceInvaders
         {
             Score += score;
             OnScoreUpdated?.Invoke(Score);
+        }
+
+        public static void PauseGame()
+        {
+            Time.timeScale = 0f;
+            OnGamePaused?.Invoke(true);
+        }
+
+        public static void ResumeGame()
+        {
+            Time.timeScale = 1f;
+            OnGamePaused?.Invoke(false);
         }
     }
 }
