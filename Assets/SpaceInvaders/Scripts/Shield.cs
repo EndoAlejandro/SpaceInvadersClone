@@ -10,7 +10,7 @@ namespace SpaceInvaders
 
         private void Awake() => _tilemap = GetComponent<Tilemap>();
 
-        public void DestroyShieldTile(Collider2D projectileCollider, bool isFalling = false)
+        public void DestroyShieldTile(Collider2D projectileCollider)
         {
             var cell = new Vector3Int();
             

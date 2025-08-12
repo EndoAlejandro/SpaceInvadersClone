@@ -1514,7 +1514,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projectile: {fileID: 5934947197300474006, guid: 02080c2b566eba548acc39c342c5e1a8, type: 3}
-  _speed: 6
+  _speed: 8
 --- !u!1 &1690066086
 GameObject:
   m_ObjectHideFlags: 0
@@ -2970,6 +2970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawner: {fileID: 1909607852}
+  _specialEnemyCooldown: 5
 --- !u!4 &1909607851
 Transform:
   m_ObjectHideFlags: 0
@@ -3001,7 +3002,8 @@ MonoBehaviour:
   _distance: {x: 0.55, y: 0.5}
   _enemyPrefab: {fileID: 3469563403593742182, guid: ab396cc976f2af04490c1896df19a76c, type: 3}
   _specialEnemyPrefab: {fileID: 2558146429582366393, guid: 7e7a6a628311dff47a34fa21cd8db7a7, type: 3}
-  _specialEnemySpawnOffset: -1
+  _specialEnemySpeed: 3
+  _specialEnemySpawnOffset: -0.5
   _yellowEnemy: {fileID: 11400000, guid: 2ad26292b145d9043b62af7637119e93, type: 2}
   _greenEnemy: {fileID: 11400000, guid: fcf242a4941ce024c8433a30f8c6835b, type: 2}
   _redEnemy: {fileID: 11400000, guid: e1dfe3101b22e4e43a5490cf799e40b6, type: 2}

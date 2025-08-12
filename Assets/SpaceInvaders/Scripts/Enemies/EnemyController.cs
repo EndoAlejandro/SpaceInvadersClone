@@ -6,14 +6,17 @@ namespace SpaceInvaders.Enemies
     /// <summary>
     /// Spawn and move all enemies.
     /// </summary>
-    public class EnemiesController : MonoBehaviour
+    public class EnemyController : MonoBehaviour
     {
         [SerializeField] private EnemySpawner _spawner;
+        [SerializeField] private float _specialEnemyCooldown = 5f;
 
         public static List<Enemy> Enemies { get; private set; }
 
         public static int EnemiesAmount { get; private set; }
 
+        private float _specialEnemyTimer;
+        
         private void Awake()
         {
             Enemies = new List<Enemy>();
@@ -23,9 +26,21 @@ namespace SpaceInvaders.Enemies
         // Create the enemies from a pool.
         private void Start()
         {
+            _specialEnemyTimer = _specialEnemyCooldown;
             var se = _spawner.SpawnSpecialEnemy();
             Enemies = _spawner.SpawnBaseEnemies();
             EnemiesAmount = Enemies.Count;
+        }
+
+        private void Update()
+        {
+            _specialEnemyTimer -= Time.deltaTime;
+
+            if (_specialEnemyTimer <= 0f)
+            {
+                _specialEnemyTimer = _specialEnemyCooldown;
+                _spawner.SpawnSpecialEnemy();
+            }
         }
 
         // When an enemy dies is removed from the enemy collection.

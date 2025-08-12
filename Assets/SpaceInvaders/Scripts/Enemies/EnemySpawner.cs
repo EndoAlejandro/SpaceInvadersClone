@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SpaceInvaders.Core;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace SpaceInvaders.Enemies
         [SerializeField] private Enemy _enemyPrefab;
 
         [SerializeField] private SpecialEnemy _specialEnemyPrefab;
+        [SerializeField] private float _specialEnemySpeed = .5f;
         [SerializeField] private float _specialEnemySpawnOffset;
 
         [Space]
@@ -22,6 +24,12 @@ namespace SpaceInvaders.Enemies
         [SerializeField] private EnemyStatsSo _redEnemy;
 
         private SpecialEnemy _spawnedSpecialEnemy;
+        private Vector3 _initialPosition;
+
+        private void Awake()
+        {
+            _initialPosition = transform.position;
+        }
 
         public SpecialEnemy SpawnSpecialEnemy()
         {
@@ -31,7 +39,7 @@ namespace SpaceInvaders.Enemies
             }
 
             _spawnedSpecialEnemy.gameObject.SetActive(true);
-            _spawnedSpecialEnemy.Setup(transform, 5f, _specialEnemySpawnOffset);
+            _spawnedSpecialEnemy.Setup(_initialPosition, _specialEnemySpeed, _specialEnemySpawnOffset);
             return _spawnedSpecialEnemy;
         }
 
@@ -49,7 +57,7 @@ namespace SpaceInvaders.Enemies
                 for (int j = 0; j < _enemiesMatrixSize.y; j++)
                 {
                     var normalizedJ = (float)j / _enemiesMatrixSize.y;
-                    var sprite = normalizedJ switch {
+                    var stats = normalizedJ switch {
                         > .6f => _greenEnemy,
                         > .3f => _yellowEnemy,
                         _ => _redEnemy,
@@ -60,7 +68,7 @@ namespace SpaceInvaders.Enemies
                     position += transform.position;
 
                     var pooledEnemy = pool.PoolObject<Enemy>();
-                    pooledEnemy.Setup(transform, position, sprite);
+                    pooledEnemy.Setup(transform, position, stats);
                     enemies.Add(pooledEnemy);
                 }
             }

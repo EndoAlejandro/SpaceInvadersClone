@@ -17,6 +17,12 @@ namespace SpaceInvaders.Enemies
         private float _timeBetweenShooting;
         private Pool _bulletsPool;
 
+        private void Awake()
+        {
+            _minTimeBetweenShooting = Mathf.Max(_minTimeBetweenShooting * (1f - GameManager.NormalizedLevel), Constants.MIN_DIFFICULTY_SCALE);
+            _maxTimeBetweenShooting = Mathf.Max(_maxTimeBetweenShooting * (1f - GameManager.NormalizedLevel), Constants.MIN_DIFFICULTY_SCALE);
+        }
+
         private void Start()
         {
             _bulletsPool = Pool.CreatePool("EnemyProjectiles", 3, _projectilePrefab);
@@ -28,11 +34,11 @@ namespace SpaceInvaders.Enemies
             if (_shootingTimer < _timeBetweenShooting) return;
 
             _shootingTimer = 0f;
-            var t = _difficultyCurve.Evaluate(1 - EnemiesController.Enemies.Count / (float)EnemiesController.Enemies.Count);
+            var t = _difficultyCurve.Evaluate(1 - EnemyController.Enemies.Count / (float)EnemyController.Enemies.Count);
             _timeBetweenShooting = Mathf.Lerp(_minTimeBetweenShooting, _maxTimeBetweenShooting, t);
-            int randomIndex = Random.Range(0, EnemiesController.Enemies.Count);
+            int randomIndex = Random.Range(0, EnemyController.Enemies.Count);
             var pooledBullet = _bulletsPool.PoolObject<EnemyProjectile>();
-            pooledBullet.Setup(EnemiesController.Enemies[randomIndex].transform.position, _projectileSpeed);
+            pooledBullet.Setup(EnemyController.Enemies[randomIndex].transform.position, _projectileSpeed);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace SpaceInvaders.Enemies
             }
             else if (other.TryGetComponent(out Shield shield))
             {
-                shield.DestroyShieldTile(_collider, true);
+                shield.DestroyShieldTile(_collider);
                 DestroyProjectile();
             }
         }

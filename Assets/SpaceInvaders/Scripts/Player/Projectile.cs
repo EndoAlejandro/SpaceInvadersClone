@@ -40,7 +40,7 @@ namespace SpaceInvaders.Player
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out Enemy enemy))
+            if (other.TryGetComponent(out BaseEnemy enemy))
             {
                 enemy.Kill();
                 DestroyProjectile();
@@ -59,6 +59,7 @@ namespace SpaceInvaders.Player
         private void DestroyProjectile()
         {
             _onDestroyedCallback?.Invoke();
+            _speed = 0f;
             ReturnToPool();
         }
     }

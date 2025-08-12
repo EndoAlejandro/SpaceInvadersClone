@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
-using static SpaceInvaders.Enemies.EnemiesController;
+using static SpaceInvaders.Enemies.EnemyController;
 
 namespace SpaceInvaders.Enemies
 {
@@ -22,6 +22,9 @@ namespace SpaceInvaders.Enemies
 
         private void Awake()
         {
+            _minTimeBetweenMovement = Mathf.Max(_minTimeBetweenMovement * (1f - GameManager.NormalizedLevel), Constants.MIN_DIFFICULTY_SCALE);
+            _maxTimeBetweenMovement = Mathf.Max(_maxTimeBetweenMovement * (1f - GameManager.NormalizedLevel), Constants.MIN_DIFFICULTY_SCALE);
+            
             _timeBetweenMovement = _minTimeBetweenMovement;
             BaseEnemy.OnDeath += EnemyOnDeath;
         }
@@ -46,7 +49,7 @@ namespace SpaceInvaders.Enemies
                 transform.position += Vector3.right * _moveDistance.x;
             }
 
-            Enemy enemy = EnemiesController.Enemies.FirstOrDefault(enemy => enemy.IsTouchingBottomLimit());
+            Enemy enemy = EnemyController.Enemies.FirstOrDefault(enemy => enemy.IsTouchingBottomLimit());
             if (enemy)
             {
                 GameManager.LoseGame();
@@ -57,7 +60,7 @@ namespace SpaceInvaders.Enemies
         {
             if (!_touchingBorder)
             {
-                var result = EnemiesController.Enemies.FirstOrDefault(enemy => enemy.WillTouchBorder(_moveDistance));
+                var result = EnemyController.Enemies.FirstOrDefault(enemy => enemy.WillTouchBorder(_moveDistance));
                 _movementTimer = 0;
 
                 // When an enemy is touching the safe area, chane movement to vertical and flip horizontal direction.
@@ -71,7 +74,7 @@ namespace SpaceInvaders.Enemies
 
         private void EnemyOnDeath(BaseEnemy enemy)
         {
-            var t = _difficultyCurve.Evaluate(1 - EnemiesController.Enemies.Count / (float)EnemiesAmount);
+            var t = _difficultyCurve.Evaluate(1 - EnemyController.Enemies.Count / (float)EnemiesAmount);
             _timeBetweenMovement = Mathf.Lerp(_minTimeBetweenMovement, _maxTimeBetweenMovement, t);
         }
 

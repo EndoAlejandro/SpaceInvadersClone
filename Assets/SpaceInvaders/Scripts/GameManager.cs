@@ -17,22 +17,22 @@ namespace SpaceInvaders
         public static float TopEdge => Camera.main?.ViewportToWorldPoint(Vector2.up * (1f - Constants.HEIGHT_SAFE_SPACE)).y ?? 0f;
 
         public static float BottomEdge => Camera.main?.ViewportToWorldPoint(Vector2.up * Constants.HEIGHT_SAFE_SPACE).y ?? 0f;
-        public static float BottomEnemyLimit => Camera.main?.ViewportToWorldPoint(Vector2.up * Constants.HEIGHT_DEATH_SPACE).y ?? 0f;
 
-        public static float ScreenHeight => Screen.height * Constants.HEIGHT_SAFE_SPACE;
+        public static float BottomEnemyLimit => Camera.main?.ViewportToWorldPoint(Vector2.up * Constants.HEIGHT_DEATH_SPACE).y ?? 0f;
 
         public static int Level { get; private set; }
 
         public static int Lives { get; private set; }
 
         public static int Score { get; private set; }
-        
+        public static float NormalizedLevel => Level / (float)Constants.MAX_LEVEL;
+
         public static int MaxScore
         {
             get => PlayerPrefs.GetInt("Score", 0);
             private set => PlayerPrefs.SetInt("Score", value);
         }
-
+        
         private static InputReader CreateInputReader()
         {
             var inputReader = new InputReader();
@@ -67,7 +67,8 @@ namespace SpaceInvaders
         {
             Level++;
             Lives++;
-            SceneManager.LoadScene("Transition");
+
+            SceneManager.LoadScene(Level > Constants.MAX_LEVEL ? "GameOver" : "Transition");
         }
 
         public static void LoseGame()
@@ -75,15 +76,14 @@ namespace SpaceInvaders
             Lives--;
             if (Lives <= 0)
             {
-                if(Score > MaxScore) MaxScore = Score;
-                
+                if (Score > MaxScore) MaxScore = Score;
+
                 SceneManager.LoadScene("GameOver");
             }
             else
             {
                 SceneManager.LoadScene("Transition");
             }
-            
         }
 
         public static void AddScore(int score)

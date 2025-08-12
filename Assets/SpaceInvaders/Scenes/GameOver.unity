@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 461112483}
   - component: {fileID: 461112482}
   m_Layer: 0
-  m_Name: Information_Text
+  m_Name: Title_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -893,9 +893,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1585214530}
+  - component: {fileID: 1585214531}
   - component: {fileID: 1585214529}
   - component: {fileID: 1585214528}
-  - component: {fileID: 1585214531}
   - component: {fileID: 1585214532}
   - component: {fileID: 1585214533}
   m_Layer: 0
@@ -988,6 +988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09e3a1a51a764ef3b30a1c061484c6ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _titleText: {fileID: 461112482}
   _levelText: {fileID: 446279524}
   _scoreText: {fileID: 1470521975}
   _maxScoreText: {fileID: 1825173292}

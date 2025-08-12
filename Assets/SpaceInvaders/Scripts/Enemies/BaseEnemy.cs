@@ -14,7 +14,7 @@ namespace SpaceInvaders.Enemies
             _points = enemyStats.Points;
         }
 
-        public void Kill()
+        public virtual void Kill()
         {
             OnDeath?.Invoke(this);
             GameManager.AddScore(_points);
