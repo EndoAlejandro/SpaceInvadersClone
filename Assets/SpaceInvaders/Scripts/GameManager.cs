@@ -17,6 +17,7 @@ namespace SpaceInvaders
         public static float TopEdge => Camera.main?.ViewportToWorldPoint(Vector2.up * (1f - Constants.HEIGHT_SAFE_SPACE)).y ?? 0f;
 
         public static float BottomEdge => Camera.main?.ViewportToWorldPoint(Vector2.up * Constants.HEIGHT_SAFE_SPACE).y ?? 0f;
+        public static float BottomEnemyLimit => Camera.main?.ViewportToWorldPoint(Vector2.up * Constants.HEIGHT_DEATH_SPACE).y ?? 0f;
 
         public static float ScreenHeight => Screen.height * Constants.HEIGHT_SAFE_SPACE;
 

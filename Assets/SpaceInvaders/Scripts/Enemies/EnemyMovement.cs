@@ -1,21 +1,25 @@
 ﻿using System.Linq;
 using UnityEngine;
+using static SpaceInvaders.Enemies.EnemiesController;
 
 namespace SpaceInvaders.Enemies
 {
     public class EnemyMovement : MonoBehaviour
     {
         [SerializeField] private Vector2 _moveDistance = new Vector2(.5f, .5f);
+
         [Space]
         [SerializeField] private float _minTimeBetweenMovement = 1f;
+
         [SerializeField] private float _maxTimeBetweenMovement = .25f;
+
         [Space]
         [SerializeField] private AnimationCurve _difficultyCurve;
 
         private float _timeBetweenMovement;
         private float _movementTimer;
         private bool _touchingBorder;
-        
+
         private void Awake()
         {
             _timeBetweenMovement = _minTimeBetweenMovement;
@@ -41,8 +45,14 @@ namespace SpaceInvaders.Enemies
             {
                 transform.position += Vector3.right * _moveDistance.x;
             }
+
+            Enemy enemy = EnemiesController.Enemies.FirstOrDefault(enemy => enemy.IsTouchingBottomLimit());
+            if (enemy)
+            {
+                GameManager.LoseGame();
+            }
         }
-        
+
         private void EdgeCheck()
         {
             if (!_touchingBorder)
@@ -61,7 +71,7 @@ namespace SpaceInvaders.Enemies
 
         private void EnemyOnDeath(BaseEnemy enemy)
         {
-            var t = _difficultyCurve.Evaluate(1 - EnemiesController.Enemies.Count / (float)EnemiesController.EnemiesAmount);
+            var t = _difficultyCurve.Evaluate(1 - EnemiesController.Enemies.Count / (float)EnemiesAmount);
             _timeBetweenMovement = Mathf.Lerp(_minTimeBetweenMovement, _maxTimeBetweenMovement, t);
         }
 

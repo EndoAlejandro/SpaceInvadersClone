@@ -28,5 +28,8 @@ namespace SpaceInvaders.Enemies
             return transform.position.x + moveDistance.x < GameManager.LeftEdge
                 || transform.position.x + moveDistance.x > GameManager.RightEdge;
         }
+
+        public bool IsTouchingBottomLimit() => 
+            transform.position.y < GameManager.BottomEnemyLimit;
     }
 }
