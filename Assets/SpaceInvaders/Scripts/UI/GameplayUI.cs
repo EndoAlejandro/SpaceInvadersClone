@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 namespace SpaceInvaders.UI
 {
+    /// <summary>
+    /// Gameplay Context UI. Also handle Pause button.
+    /// </summary>
     public class GameplayUI : MonoBehaviour
     {
         [SerializeField] private TMP_Text _scoreText;

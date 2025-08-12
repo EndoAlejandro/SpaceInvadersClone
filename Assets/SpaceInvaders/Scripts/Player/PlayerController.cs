@@ -11,7 +11,7 @@ namespace SpaceInvaders.Player
         public static event Action OnDeath;
 
         [SerializeField] private Transform _visuals;
-        
+
         [SerializeField] private float _acceleration = 1f;
         [SerializeField] private float _deceleration = 1f;
         [SerializeField] private float _maxSpeed = 1f;
@@ -31,26 +31,32 @@ namespace SpaceInvaders.Player
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        private void FixedUpdate()
+        private void FixedUpdate() => Movement();
+
+        /// <summary>
+        /// Handle player movement.
+        /// </summary>
+        private void Movement()
         {
             float inputMovement = _input.Movement;
             float acceleration = _acceleration;
             Vector3 targetVelocity = Vector3.right * (inputMovement * _maxSpeed);
 
+            // If there is no input pressed.
             if (Mathf.Abs(inputMovement) < 0.05f)
             {
                 targetVelocity = Vector3.zero;
                 acceleration = _deceleration;
             }
 
-            // Side checks.
+            // Left Check.
             if (transform.position.x < GameManager.LeftEdge)
             {
                 _rigidbody.MovePosition(new Vector3(GameManager.LeftEdge, transform.position.y, transform.position.z));
                 _velocity = Vector3.zero;
                 return;
             }
-
+            // Right Check.
             if (transform.position.x > GameManager.RightEdge)
             {
                 _rigidbody.MovePosition(new Vector3(GameManager.RightEdge, transform.position.y, transform.position.z));
@@ -63,15 +69,22 @@ namespace SpaceInvaders.Player
             _rigidbody.MovePosition(transform.position + _velocity * Time.fixedDeltaTime);
         }
 
+        /// <summary>
+        /// If player get damage. kill it.
+        /// </summary>
         public void Kill()
         {
             OnDeath?.Invoke();
             _input.DisableMainInput();
             _collider.enabled = false;
             _visuals.gameObject.SetActive(false);
-            Invoke(nameof(LoseGame), 2f);
+            // Awaits a few seconds for a better transition.
+            Invoke(nameof(LoseGame), Constants.DEATH_TIME_TO_TRANSITION);
         }
-        
+
+        /// <summary>
+        /// Call lose game after wait time.
+        /// </summary>
         private void LoseGame() => GameManager.LoseGame();
     }
 }

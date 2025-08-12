@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
-using static SpaceInvaders.Enemies.EnemyController;
+using static SpaceInvaders.Enemies.EnemyManager;
 
 namespace SpaceInvaders.Enemies
 {
+    /// <summary>
+    /// Move all spawned enemies at once.
+    /// </summary>
     public class EnemyMovement : MonoBehaviour
     {
+        /// <summary>
+        /// Called each movement.
+        /// </summary>
         public static event Action OnMove;
 
         [SerializeField] private Vector2 _moveDistance = new Vector2(.5f, .5f);
@@ -25,21 +31,26 @@ namespace SpaceInvaders.Enemies
 
         private void Awake()
         {
+            // Movement limits scaling with current level.
             _minTimeBetweenMovement = Mathf.Max(_minTimeBetweenMovement * (1f - GameManager.NormalizedLevel), Constants.MIN_DIFFICULTY_SCALE);
             _maxTimeBetweenMovement = Mathf.Max(_maxTimeBetweenMovement * (1f - GameManager.NormalizedLevel), Constants.MIN_DIFFICULTY_SCALE);
 
+            // Always starts with minTime.
             _timeBetweenMovement = _minTimeBetweenMovement;
             BaseEnemy.OnDeath += EnemyOnDeath;
         }
 
-        private void Update()
+        private void Update() => Movement();
+
+        /// <summary>
+        /// Movement logic.
+        /// </summary>
+        private void Movement()
         {
             _movementTimer += Time.deltaTime;
             if (_movementTimer < _timeBetweenMovement) return;
-
             _movementTimer = 0;
             
-            // Check if any enemy is touching the safe area.
             EdgeCheck();
 
             // Vertical Movement.
@@ -53,26 +64,35 @@ namespace SpaceInvaders.Enemies
             {
                 transform.position += Vector3.right * _moveDistance.x;
             }
-            
             OnMove?.Invoke();
+            BottomReachedCheck();
+        }
 
-            Enemy enemy = EnemyController.Enemies.FirstOrDefault(enemy => enemy.IsTouchingBottomLimit());
-            if (enemy)
+        /// <summary>
+        /// Checks if any enemy reached the bottom of the screen.
+        /// </summary>
+        private static void BottomReachedCheck()
+        {
+            StandardEnemy standardEnemy = EnemyManager.Enemies.FirstOrDefault(enemy => enemy.IsTouchingBottomLimit());
+            if (standardEnemy)
             {
                 GameManager.LoseGame();
             }
         }
 
+        /// <summary>
+        /// Check if any enemy is touching the safe area.
+        /// </summary>
         private void EdgeCheck()
         {
             if (_touchingBorder) return;
-            
-            foreach (var enemy in EnemyController.Enemies)
+
+            foreach (var enemy in EnemyManager.Enemies)
             {
                 enemy.NextSprite();
 
                 if (!enemy.WillTouchBorder(_moveDistance)) continue;
-                
+
                 _touchingBorder = true;
                 _moveDistance.x *= -1f;
             }
@@ -80,7 +100,7 @@ namespace SpaceInvaders.Enemies
 
         private void EnemyOnDeath(BaseEnemy enemy)
         {
-            var t = _difficultyCurve.Evaluate(1 - EnemyController.Enemies.Count / (float)EnemiesAmount);
+            var t = _difficultyCurve.Evaluate(1 - EnemyManager.Enemies.Count / (float)EnemiesAmount);
             _timeBetweenMovement = Mathf.Lerp(_minTimeBetweenMovement, _maxTimeBetweenMovement, t);
         }
 

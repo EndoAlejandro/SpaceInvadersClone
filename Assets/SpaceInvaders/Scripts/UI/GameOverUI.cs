@@ -2,8 +2,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.UI
 {
+    /// <summary>
+    /// Final Screen UI. Handles GameOver and Victory.
+    /// </summary>
     public class GameOverUI : MonoBehaviour
     {
         [SerializeField] private TMP_Text _titleText;

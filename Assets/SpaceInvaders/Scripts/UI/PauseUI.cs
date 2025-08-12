@@ -1,9 +1,11 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace SpaceInvaders.UI
 {
+    /// <summary>
+    /// Pause Controller.
+    /// </summary>
     public class PauseUI : MonoBehaviour
     {
         [SerializeField] private GameObject _container;

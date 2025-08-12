@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 namespace SpaceInvaders.UI
 {
+    /// <summary>
+    /// Transition UI Information display.
+    /// </summary>
     public class TransitionUI : MonoBehaviour
     {
         [SerializeField] private TMP_Text _transitionText;

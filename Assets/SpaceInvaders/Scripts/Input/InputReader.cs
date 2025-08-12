@@ -1,5 +1,8 @@
 ﻿namespace SpaceInvaders.Input
 {
+    /// <summary>
+    /// Custom input system management.
+    /// </summary>
     public class InputReader
     {
         private readonly MainControls _controls = new MainControls();

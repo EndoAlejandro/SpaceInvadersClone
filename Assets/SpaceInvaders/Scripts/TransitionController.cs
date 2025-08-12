@@ -4,18 +4,19 @@ using UnityEngine;
 
 namespace SpaceInvaders
 {
+    /// <summary>
+    /// Scene Controller in between Gameplay loop.
+    /// </summary>
     public class TransitionController : MonoBehaviour
     {
-        [SerializeField] private float _loadTime = 5f;
-        [SerializeField] private TransitionUI _transitionUI;
+        private float NormalizedTimer => _timer / Constants.TRANSITION_LOAD_TIME;
         
+        [SerializeField] private TransitionUI _transitionUI;
         [SerializeField] private AudioData _audioData;
         [SerializeField] private AudioSource _audioSource;
 
         private float _timer;
-
         private bool _ended;
-        private float NormalizedTimer => _timer / _loadTime;
 
         private void Awake()
         {
@@ -33,7 +34,7 @@ namespace SpaceInvaders
             if (NormalizedTimer >= 1f)
             {
                 _ended = true;
-                GameManager.LoadGameScene();
+                GameManager.LoadGameplayScene();
             }
         }
     }

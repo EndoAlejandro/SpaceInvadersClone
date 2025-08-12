@@ -3,6 +3,9 @@ using SpaceInvaders.Core;
 
 namespace SpaceInvaders.Enemies
 {
+    /// <summary>
+    /// Base clase for Standard and Special enemies.
+    /// </summary>
     public abstract class BaseEnemy : PoolableMonoBehaviour
     {
         public static Action<BaseEnemy> OnDeath;
@@ -20,6 +23,7 @@ namespace SpaceInvaders.Enemies
         public virtual void Kill()
         {
             OnDeath?.Invoke(this);
+            // All enemies give points when killed.
             GameManager.AddScore(_points);
             ReturnToPool();
         }

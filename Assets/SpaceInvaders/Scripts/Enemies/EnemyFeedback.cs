@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace SpaceInvaders.Enemies
 {
+    /// <summary>
+    /// Play visual and sound feedback when needed.
+    /// </summary>
     public class EnemyFeedback : MonoBehaviour
     {
         [SerializeField] private Sprite _deathSprite;

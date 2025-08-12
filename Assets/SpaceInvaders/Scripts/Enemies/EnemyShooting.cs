@@ -5,6 +5,9 @@ using Random = UnityEngine.Random;
 
 namespace SpaceInvaders.Enemies
 {
+    /// <summary>
+    /// Handle enemies shooting.
+    /// </summary>
     public class EnemyShooting : MonoBehaviour
     {
         public static event Action OnShoot;
@@ -25,22 +28,32 @@ namespace SpaceInvaders.Enemies
             _maxTimeBetweenShooting = Mathf.Max(_maxTimeBetweenShooting * (1f - GameManager.NormalizedLevel), Constants.MIN_DIFFICULTY_SCALE);
         }
 
-        private void Start()
-        {
+        /// <summary>
+        /// Creates initial projectiles pool.
+        /// </summary>
+        private void Start() => 
             _bulletsPool = Pool.CreatePool("EnemyProjectiles", 3, _projectilePrefab);
-        }
 
         private void Update()
         {
+            // Checks for shooting timer.
             _shootingTimer += Time.deltaTime;
             if (_shootingTimer < _timeBetweenShooting) return;
 
+            Shoot();
+        }
+
+        /// <summary>
+        /// Spawn projectile from pool.
+        /// </summary>
+        private void Shoot()
+        {
             _shootingTimer = 0f;
-            var t = _difficultyCurve.Evaluate(1 - EnemyController.Enemies.Count / (float)EnemyController.Enemies.Count);
+            var t = _difficultyCurve.Evaluate(1 - EnemyManager.Enemies.Count / (float)EnemyManager.Enemies.Count);
             _timeBetweenShooting = Mathf.Lerp(_minTimeBetweenShooting, _maxTimeBetweenShooting, t);
-            int randomIndex = Random.Range(0, EnemyController.Enemies.Count);
-            var pooledBullet = _bulletsPool.PoolObject<EnemyProjectile>();
-            pooledBullet.Setup(EnemyController.Enemies[randomIndex].transform.position, _projectileSpeed);
+            int randomIndex = Random.Range(0, EnemyManager.Enemies.Count);
+            var pooledProjectile = _bulletsPool.PoolObject<EnemyProjectile>();
+            pooledProjectile.Setup(EnemyManager.Enemies[randomIndex].transform.position, _projectileSpeed);
             OnShoot?.Invoke();
         }
     }

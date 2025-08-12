@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.UI
 {
+    /// <summary>
+    /// Initial game screen.
+    /// </summary>
     public class MainMenuUI : MonoBehaviour
     {
         [SerializeField] private Button _playButton;

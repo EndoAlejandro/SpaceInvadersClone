@@ -4,49 +4,54 @@ using UnityEngine;
 namespace SpaceInvaders.Enemies
 {
     /// <summary>
-    /// Spawn and move all enemies.
+    /// Manage all enemies at the same time.
     /// </summary>
-    public class EnemyController : MonoBehaviour
+    public class EnemyManager : MonoBehaviour
     {
-        [SerializeField] private EnemySpawner _spawner;
-        [SerializeField] private float _specialEnemyCooldown = 5f;
-
-        public static List<Enemy> Enemies { get; private set; }
+        /// <summary>
+        /// Instanced enemies.
+        /// </summary>
+        public static List<StandardEnemy> Enemies { get; private set; }
 
         public static int EnemiesAmount { get; private set; }
 
+        [SerializeField] private EnemySpawner _spawner;
+        [SerializeField] private float _specialEnemyCooldown = 5f;
+
         private float _specialEnemyTimer;
-        
+
         private void Awake()
         {
-            Enemies = new List<Enemy>();
+            Enemies = new List<StandardEnemy>();
             BaseEnemy.OnDeath += EnemyOnDeath;
         }
 
-        // Create the enemies from a pool.
         private void Start()
         {
+            // Sets special enemy timer.
             _specialEnemyTimer = _specialEnemyCooldown;
-            var se = _spawner.SpawnSpecialEnemy();
+            
+            // Spawn initial enemies.
             Enemies = _spawner.SpawnBaseEnemies();
             EnemiesAmount = Enemies.Count;
         }
 
+        /// <summary>
+        /// Timer for special enemy spawn.
+        /// </summary>
         private void Update()
         {
             _specialEnemyTimer -= Time.deltaTime;
-
-            if (_specialEnemyTimer <= 0f)
-            {
-                _specialEnemyTimer = _specialEnemyCooldown;
-                _spawner.SpawnSpecialEnemy();
-            }
+            if (_specialEnemyTimer > 0f) return;
+            
+            _specialEnemyTimer = _specialEnemyCooldown;
+            _spawner.SpawnSpecialEnemy();
         }
 
         // When an enemy dies is removed from the enemy collection.
         private void EnemyOnDeath(BaseEnemy baseEnemy)
         {
-            if (baseEnemy is not Enemy enemy) return;
+            if (baseEnemy is not StandardEnemy enemy) return;
 
             Enemies?.Remove(enemy);
             if (Enemies?.Count == 0)

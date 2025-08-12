@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace SpaceInvaders.Enemies
 {
+    /// <summary>
+    /// Special enemy sound fx.
+    /// </summary>
     public class SpecialEnemyFeedback : MonoBehaviour
     {
         [SerializeField] private AudioData _audioData;
