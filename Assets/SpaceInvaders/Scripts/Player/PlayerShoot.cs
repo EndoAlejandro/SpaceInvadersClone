@@ -7,7 +7,6 @@ namespace SpaceInvaders.Player
     {
         [SerializeField] private Projectile _projectile;
         [SerializeField] private float _speed;
-        [SerializeField] private float _bulletLifeTime = 1f;
 
         private Pool _pool;
         private bool _canShoot = true;
@@ -23,7 +22,7 @@ namespace SpaceInvaders.Player
 
             _canShoot = false;
             var projectile = _pool.PoolObject<Projectile>();
-            projectile.Setup(transform.position, _speed, _bulletLifeTime, OnProjectileDestroyed);
+            projectile.Setup(transform.position, _speed, OnProjectileDestroyed);
         }
 
         private void OnProjectileDestroyed() => _canShoot = true;

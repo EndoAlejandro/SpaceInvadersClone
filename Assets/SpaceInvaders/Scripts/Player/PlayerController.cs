@@ -46,7 +46,7 @@ namespace SpaceInvaders.Player
                 _velocity = Vector3.zero;
                 return;
             }
-            
+
             if (transform.position.x > GameManager.RightEdge)
             {
                 _rigidbody.MovePosition(new Vector3(GameManager.RightEdge, transform.position.y, transform.position.z));
@@ -57,6 +57,11 @@ namespace SpaceInvaders.Player
             // Custom physics.
             _velocity = Vector3.MoveTowards(_velocity, targetVelocity, acceleration * Time.fixedDeltaTime);
             _rigidbody.MovePosition(transform.position + _velocity * Time.fixedDeltaTime);
+        }
+
+        public void Kill()
+        {
+            GameManager.LoseGame();
         }
     }
 }

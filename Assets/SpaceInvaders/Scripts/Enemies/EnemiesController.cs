@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SpaceInvaders.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace SpaceInvaders.Enemies
 {
@@ -26,29 +26,58 @@ namespace SpaceInvaders.Enemies
         [Header("Movement Settings")]
         [SerializeField] private Vector2 _moveDistance = new Vector2(.5f, .5f);
 
-        [SerializeField] private float _timeBetweenMovement = 1f;
+        [SerializeField] private float _minTimeBetweenMovement = 1f;
+        [SerializeField] private float _maxTimeBetweenMovement = .25f;
+
+        [FormerlySerializedAs("_movementCurve")]
+        [SerializeField] private AnimationCurve _difficultyCurve;
+
+        [Header("Shooting Settings")]
+        [SerializeField] private EnemyProjectile _projectilePrefab;
+
+        [SerializeField] private float _projectileSpeed = 1f;
+
+        [SerializeField] private float _minTimeBetweenShooting = 5f;
+        [SerializeField] private float _maxTimeBetweenShooting = 1f;
 
         private List<Enemy> _enemies;
-        private float _timer;
+        private int _enemiesAmount;
         private bool _touchingBorder;
+
+        private float _timeBetweenMovement;
+        private float _movementTimer;
+
+        private float _timeBetweenShooting;
+        private float _shootingTimer;
+        private Pool _bulletsPool;
 
         private void Awake()
         {
             _enemies = new List<Enemy>();
+            _timeBetweenMovement = _minTimeBetweenMovement;
             Enemy.OnDeath += EnemyOnDeath;
         }
 
-        // When an enemy dies is removed from the enemies collection.
+        // When an enemy dies is removed from the enemy collection.
         private void EnemyOnDeath(Enemy enemy)
         {
             _enemies?.Remove(enemy);
-            // TODO: Increase move speed.
+            var t = _difficultyCurve.Evaluate(1 - _enemies.Count / (float)_enemiesAmount);
+            _timeBetweenMovement = Mathf.Lerp(_minTimeBetweenMovement, _maxTimeBetweenMovement, t);
         }
 
         // Create the enemies from a pool.
         private void Start()
         {
-            var pool = Pool.CreatePool("Enemies", _enemiesMatrixSize.x + _enemiesMatrixSize.y, _enemyPrefab);
+            _enemiesAmount = _enemiesMatrixSize.x + _enemiesMatrixSize.y;
+            _bulletsPool = Pool.CreatePool("EnemyProjectiles", 3, _projectilePrefab);
+            SpawnEnemies();
+        }
+
+        private void SpawnEnemies()
+        {
+            var pool = Pool.CreatePool("Enemies", _enemiesAmount, _enemyPrefab);
+
             var xOffset = -(_enemiesMatrixSize.x * _distance.x) / 2f + _distance.x / 2f;
 
             for (int i = 0; i < _enemiesMatrixSize.x; i++)
@@ -75,23 +104,30 @@ namespace SpaceInvaders.Enemies
 
         private void Update()
         {
-            _timer += Time.deltaTime;
+            Shooting();
+            Movement();
+        }
 
-            if (_timer < _timeBetweenMovement) return;
+        private void Shooting()
+        {
+            _shootingTimer += Time.deltaTime;
+            if (_shootingTimer < _timeBetweenShooting) return;
+
+            _shootingTimer = 0f;
+            var t = _difficultyCurve.Evaluate(1 - _enemies.Count / (float)_enemiesAmount);
+            _timeBetweenShooting = Mathf.Lerp(_minTimeBetweenShooting, _maxTimeBetweenShooting, t);
+            int randomIndex = Random.Range(0, _enemies.Count);
+            var pooledBullet = _bulletsPool.PoolObject<EnemyProjectile>();
+            pooledBullet.Setup(_enemies[randomIndex].transform.position, _projectileSpeed);
+        }
+
+        private void Movement()
+        {
+            _movementTimer += Time.deltaTime;
+            if (_movementTimer < _timeBetweenMovement) return;
 
             // Check if any enemy is touching the safe area.
-            if (!_touchingBorder)
-            {
-                var result = _enemies.FirstOrDefault(enemy => enemy.WillTouchBorder(_moveDistance));
-                _timer = 0;
-
-                // When an enemy is touching the safe area, chane movement to vertical and flip horizontal direction.
-                if (result != null)
-                {
-                    _touchingBorder = true;
-                    _moveDistance.x *= -1f;
-                }
-            }
+            EdgeCheck();
 
             // Vertical Movement.
             if (_touchingBorder)
@@ -103,6 +139,22 @@ namespace SpaceInvaders.Enemies
             else
             {
                 transform.position += Vector3.right * _moveDistance.x;
+            }
+        }
+
+        private void EdgeCheck()
+        {
+            if (!_touchingBorder)
+            {
+                var result = _enemies.FirstOrDefault(enemy => enemy.WillTouchBorder(_moveDistance));
+                _movementTimer = 0;
+
+                // When an enemy is touching the safe area, chane movement to vertical and flip horizontal direction.
+                if (result != null)
+                {
+                    _touchingBorder = true;
+                    _moveDistance.x *= -1f;
+                }
             }
         }
     }

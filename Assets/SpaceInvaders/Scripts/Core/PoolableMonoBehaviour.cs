@@ -4,17 +4,17 @@ namespace SpaceInvaders.Core
 {
     public abstract class PoolableMonoBehaviour : MonoBehaviour
     {
-        private Transform _root;
+        private Pool _pool;
 
-        public void SetupRoot(Transform root)
+        public void SetupPoolable(Pool pool)
         {
-            _root = root;
-            transform.SetParent(_root);
+            _pool = pool;
+            transform.SetParent(_pool.transform);
         }
 
         protected void ReturnToPool()
         {
-            transform.SetParent(_root);
+            transform.SetParent(_pool.transform);
             gameObject.SetActive(false);
         }
     }

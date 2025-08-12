@@ -4,7 +4,7 @@
     {
         private readonly MainControls _controls = new MainControls();
 
-        public bool Shoot => _controls != null && _controls.Player.Shoot.IsPressed();
+        public bool Shoot => _controls != null && _controls.Player.Shoot.WasPerformedThisFrame();
         
         public float Movement => _controls != null ? _controls.Player.Move.ReadValue<float>() : 0f;
         

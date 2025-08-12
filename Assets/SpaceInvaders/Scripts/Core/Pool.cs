@@ -50,7 +50,7 @@ namespace SpaceInvaders.Core
                 // Is no object was found, we create a new object and add it to the pool.
                 if (pooled == null)
                 {
-                    pooled = CreatePoolable(_prefab as T, transform);
+                    pooled = CreatePoolable(_prefab as T, this);
                     _poolables.Add(pooled);
                 }
             }
@@ -90,7 +90,7 @@ namespace SpaceInvaders.Core
 
             for (int i = 0; i < size; i++)
             {
-                var instance = CreatePoolable(prefab, poolObject.transform);
+                var instance = CreatePoolable(prefab, pool);
                 pool._poolables.Add(instance);
                 instance.gameObject.SetActive(false);
             }
@@ -103,14 +103,23 @@ namespace SpaceInvaders.Core
         /// Creates and initialize a poolable object.
         /// </summary>
         /// <param name="prefab">Poolable prefab.</param>
-        /// <param name="parent">Pool Transform.</param>
+        /// <param name="pool"></param>
         /// <typeparam name="T">Prefab Type.</typeparam>
         /// <returns>Instanced Pooled Object.</returns>
-        private static T CreatePoolable<T>(T prefab, Transform parent) where T : PoolableMonoBehaviour
+        private static T CreatePoolable<T>(T prefab, Pool pool) where T : PoolableMonoBehaviour
         {
-            var instance = Instantiate(prefab, parent);
-            instance.SetupRoot(parent);
+            var instance = Instantiate(prefab, pool.transform);
+            instance.SetupPoolable(pool);
             return instance;
+        }
+
+        private void OnDestroy()
+        {
+            var poolKv = _pools.FirstOrDefault(kv => kv.Value == this);
+            if (poolKv.Value != null)
+            {
+                _pools.Remove(poolKv.Key);
+            }
         }
     }
 }

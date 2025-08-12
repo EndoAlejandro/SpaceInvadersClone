@@ -11,23 +11,23 @@ namespace SpaceInvaders.Player
     {
         private Rigidbody2D _rigidbody;
         private float _speed;
-        private float _lifeTime;
         private Action _onDestroyedCallback;
 
-        public void Setup(Vector3 initialPosition, float speed, float lifeTime, Action onDestroyedCallback)
+        public void Setup(Vector3 initialPosition, float speed, Action onDestroyedCallback)
         {
             _rigidbody ??= GetComponent<Rigidbody2D>();
             _rigidbody.MovePosition(initialPosition);
             transform.position = initialPosition;
             _speed = speed;
-            _lifeTime = lifeTime;
             _onDestroyedCallback = onDestroyedCallback;
         }
 
         private void Update()
         {
-            _lifeTime -= Time.deltaTime;
-            if (_lifeTime <= 0) DestroyBullet();
+            if (transform.position.y > GameManager.TopEdge)
+            {
+                DestroyProjectile();
+            }
         }
 
         private void FixedUpdate()
@@ -37,12 +37,18 @@ namespace SpaceInvaders.Player
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.TryGetComponent(out Enemy enemy)) return;
-            enemy.Kill();
-            DestroyBullet();
+            if (other.TryGetComponent(out Enemy enemy))
+            {
+                enemy.Kill();
+                DestroyProjectile();
+            }
+            else if (other.TryGetComponent(out EnemyProjectile _))
+            {
+                DestroyProjectile();
+            }
         }
-        
-        private void DestroyBullet()
+
+        private void DestroyProjectile()
         {
             _onDestroyedCallback?.Invoke();
             ReturnToPool();
