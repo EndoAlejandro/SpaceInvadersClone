@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e17a6b9898c4741ab1f30b2686ce479, type: 3}
   m_Name: EnemyStats_Extra
   m_EditorClassIdentifier: 
-  <Points>k__BackingField: 0
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 0e453a6c3c2f4754e9b8f7ac348f8ef0, type: 3}
+  <Points>k__BackingField: 100
+  <MainSprite>k__BackingField: {fileID: 21300000, guid: 0e453a6c3c2f4754e9b8f7ac348f8ef0, type: 3}
+  <SecondarySprite>k__BackingField: {fileID: 21300000, guid: 0e453a6c3c2f4754e9b8f7ac348f8ef0, type: 3}

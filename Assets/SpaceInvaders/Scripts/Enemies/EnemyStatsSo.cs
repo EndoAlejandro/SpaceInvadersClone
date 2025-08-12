@@ -9,6 +9,7 @@ namespace SpaceInvaders.Enemies
     public class EnemyStatsSo : ScriptableObject
     {
         [field: SerializeField] public int Points { get; private set; }
-        [field: SerializeField] public Sprite Sprite { get; private set; }
+        [field: SerializeField] public Sprite MainSprite { get; private set; }
+        [field: SerializeField] public Sprite SecondarySprite { get; private set; }
     }
 }

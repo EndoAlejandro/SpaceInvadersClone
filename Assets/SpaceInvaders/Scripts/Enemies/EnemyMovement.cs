@@ -7,8 +7,8 @@ namespace SpaceInvaders.Enemies
 {
     public class EnemyMovement : MonoBehaviour
     {
-        public static event Action OnMove; 
-        
+        public static event Action OnMove;
+
         [SerializeField] private Vector2 _moveDistance = new Vector2(.5f, .5f);
 
         [Space]
@@ -27,7 +27,7 @@ namespace SpaceInvaders.Enemies
         {
             _minTimeBetweenMovement = Mathf.Max(_minTimeBetweenMovement * (1f - GameManager.NormalizedLevel), Constants.MIN_DIFFICULTY_SCALE);
             _maxTimeBetweenMovement = Mathf.Max(_maxTimeBetweenMovement * (1f - GameManager.NormalizedLevel), Constants.MIN_DIFFICULTY_SCALE);
-            
+
             _timeBetweenMovement = _minTimeBetweenMovement;
             BaseEnemy.OnDeath += EnemyOnDeath;
         }
@@ -37,6 +37,8 @@ namespace SpaceInvaders.Enemies
             _movementTimer += Time.deltaTime;
             if (_movementTimer < _timeBetweenMovement) return;
 
+            _movementTimer = 0;
+            
             // Check if any enemy is touching the safe area.
             EdgeCheck();
 
@@ -63,17 +65,16 @@ namespace SpaceInvaders.Enemies
 
         private void EdgeCheck()
         {
-            if (!_touchingBorder)
+            if (_touchingBorder) return;
+            
+            foreach (var enemy in EnemyController.Enemies)
             {
-                var result = EnemyController.Enemies.FirstOrDefault(enemy => enemy.WillTouchBorder(_moveDistance));
-                _movementTimer = 0;
+                enemy.NextSprite();
 
-                // When an enemy is touching the safe area, chane movement to vertical and flip horizontal direction.
-                if (result != null)
-                {
-                    _touchingBorder = true;
-                    _moveDistance.x *= -1f;
-                }
+                if (!enemy.WillTouchBorder(_moveDistance)) continue;
+                
+                _touchingBorder = true;
+                _moveDistance.x *= -1f;
             }
         }
 

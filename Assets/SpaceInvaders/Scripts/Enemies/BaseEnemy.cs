@@ -7,10 +7,13 @@ namespace SpaceInvaders.Enemies
     {
         public static Action<BaseEnemy> OnDeath;
 
+        protected EnemyStatsSo stats;
+        
         private int _points;
         
         protected void Setup(EnemyStatsSo enemyStats)
         {
+            stats = enemyStats;
             _points = enemyStats.Points;
         }
 

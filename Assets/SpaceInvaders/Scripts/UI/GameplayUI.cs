@@ -13,7 +13,7 @@ namespace SpaceInvaders.UI
         {
             GameManager.OnScoreUpdated += GameManagerOnOnScoreUpdated;
             
-            _livesText.SetText($"<sprite name=player> : {GameManager.Lives:00}");
+            _livesText.SetText($"<sprite name=player> X {GameManager.Lives:00}");
             _levelText.SetText($"Level: {GameManager.Level:00}");
         }
 

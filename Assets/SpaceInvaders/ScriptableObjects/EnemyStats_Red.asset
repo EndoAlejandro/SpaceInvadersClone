@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: EnemyStats_Red
   m_EditorClassIdentifier: 
   <Points>k__BackingField: 30
-  <Sprite>k__BackingField: {fileID: 21300000, guid: b6a595e0dd2fe87468a2f36962bf040c, type: 3}
+  <MainSprite>k__BackingField: {fileID: 21300000, guid: b6a595e0dd2fe87468a2f36962bf040c, type: 3}
+  <SecondarySprite>k__BackingField: {fileID: 21300000, guid: 82b88edef48010c4a80a76baaa581484, type: 3}
