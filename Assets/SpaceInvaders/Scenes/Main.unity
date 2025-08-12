@@ -552,8 +552,8 @@ MonoBehaviour:
   _yellowEnemy: {fileID: 11400000, guid: 2ad26292b145d9043b62af7637119e93, type: 2}
   _enemyPrefab: {fileID: 3469563403593742182, guid: ab396cc976f2af04490c1896df19a76c, type: 3}
   _extraEnemyPrefab: {fileID: 8987631067344504861, guid: dfe36c1c73c8c68498abd8470ee5d32b, type: 3}
-  _enemiesMatrixSize: {x: 9, y: 5}
-  _distance: {x: 0.5, y: 0.5}
+  _enemiesMatrixSize: {x: 8, y: 5}
+  _distance: {x: 0.55, y: 0.5}
   _moveDistance: {x: 0.25, y: 0.5}
   _minTimeBetweenMovement: 1
   _maxTimeBetweenMovement: 0.15
@@ -582,7 +582,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _projectilePrefab: {fileID: 9005531866745128053, guid: dec92beb60663594991e9bb399314911, type: 3}
-  _projectileSpeed: 2
+  _projectileSpeed: 4
   _minTimeBetweenShooting: 5
   _maxTimeBetweenShooting: 1
 --- !u!4 &1909607851
