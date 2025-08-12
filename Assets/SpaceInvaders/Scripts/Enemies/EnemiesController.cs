@@ -6,13 +6,16 @@ using UnityEngine;
 
 namespace SpaceInvaders.Enemies
 {
+    /// <summary>
+    /// Spawn and move all enemies.
+    /// </summary>
     public class EnemiesController : MonoBehaviour
     {
         [Header("Spawn Settings")]
-        [SerializeField] private Sprite _greenEnemy;
+        [SerializeField] private EnemyStatsSo _greenEnemy;
 
-        [SerializeField] private Sprite _redEnemy;
-        [SerializeField] private Sprite _yellowEnemy;
+        [SerializeField] private EnemyStatsSo _redEnemy;
+        [SerializeField] private EnemyStatsSo _yellowEnemy;
 
         [SerializeField] private Enemy _enemyPrefab;
         [SerializeField] private Enemy _extraEnemyPrefab;
@@ -32,8 +35,17 @@ namespace SpaceInvaders.Enemies
         private void Awake()
         {
             _enemies = new List<Enemy>();
+            Enemy.OnDeath += EnemyOnDeath;
         }
 
+        // When an enemy dies is removed from the enemies collection.
+        private void EnemyOnDeath(Enemy enemy)
+        {
+            _enemies?.Remove(enemy);
+            // TODO: Increase move speed.
+        }
+
+        // Create the enemies from a pool.
         private void Start()
         {
             var pool = Pool.CreatePool("Enemies", _enemiesMatrixSize.x + _enemiesMatrixSize.y, _enemyPrefab);
@@ -67,11 +79,13 @@ namespace SpaceInvaders.Enemies
 
             if (_timer < _timeBetweenMovement) return;
 
+            // Check if any enemy is touching the safe area.
             if (!_touchingBorder)
             {
                 var result = _enemies.FirstOrDefault(enemy => enemy.WillTouchBorder(_moveDistance));
                 _timer = 0;
 
+                // When an enemy is touching the safe area, chane movement to vertical and flip horizontal direction.
                 if (result != null)
                 {
                     _touchingBorder = true;
@@ -79,11 +93,13 @@ namespace SpaceInvaders.Enemies
                 }
             }
 
+            // Vertical Movement.
             if (_touchingBorder)
             {
                 _touchingBorder = false;
                 transform.position += Vector3.down * _moveDistance.y;
             }
+            // Normal movement.
             else
             {
                 transform.position += Vector3.right * _moveDistance.x;

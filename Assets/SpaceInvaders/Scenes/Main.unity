@@ -518,7 +518,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _projectile: {fileID: 5934947197300474006, guid: 02080c2b566eba548acc39c342c5e1a8, type: 3}
   _speed: 5
-  _cooldown: 1
   _bulletLifeTime: 2
 --- !u!1 &1909607849
 GameObject:
@@ -549,9 +548,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26829e6586a4476983da6661067e2277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _greenEnemy: {fileID: 21300000, guid: 708eb9f4005c7f24b8492bf26100aaa6, type: 3}
-  _redEnemy: {fileID: 21300000, guid: b6a595e0dd2fe87468a2f36962bf040c, type: 3}
-  _yellowEnemy: {fileID: 21300000, guid: 64c4082eba9a2944c8533106f64026b8, type: 3}
+  _greenEnemy: {fileID: 11400000, guid: fcf242a4941ce024c8433a30f8c6835b, type: 2}
+  _redEnemy: {fileID: 11400000, guid: e1dfe3101b22e4e43a5490cf799e40b6, type: 2}
+  _yellowEnemy: {fileID: 11400000, guid: 2ad26292b145d9043b62af7637119e93, type: 2}
   _enemyPrefab: {fileID: 3469563403593742182, guid: ab396cc976f2af04490c1896df19a76c, type: 3}
   _extraEnemyPrefab: {fileID: 8987631067344504861, guid: dfe36c1c73c8c68498abd8470ee5d32b, type: 3}
   _enemiesMatrixSize: {x: 9, y: 5}

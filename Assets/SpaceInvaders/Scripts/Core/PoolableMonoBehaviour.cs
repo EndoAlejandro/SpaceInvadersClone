@@ -12,7 +12,7 @@ namespace SpaceInvaders.Core
             transform.SetParent(_root);
         }
 
-        public void ReturnToPool()
+        protected void ReturnToPool()
         {
             transform.SetParent(_root);
             gameObject.SetActive(false);
