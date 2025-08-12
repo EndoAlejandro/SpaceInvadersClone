@@ -37,8 +37,6 @@ namespace SpaceInvaders.Player
                 acceleration = _deceleration;
             }
 
-            var safeSpace = 0.1f;
-
             // Side checks.
             if (transform.position.x < GameManager.LeftEdge)
             {

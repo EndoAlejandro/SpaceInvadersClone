@@ -25,7 +25,12 @@ namespace SpaceInvaders
         public static int Lives { get; private set; }
 
         public static int Score { get; private set; }
-
+        
+        public static int MaxScore
+        {
+            get => PlayerPrefs.GetInt("Score", 0);
+            private set => PlayerPrefs.SetInt("Score", value);
+        }
 
         private static InputReader CreateInputReader()
         {
@@ -34,13 +39,16 @@ namespace SpaceInvaders
             return inputReader;
         }
 
-        public static void IncreaseLevel() => Level++;
-
         private static void ResetGame()
         {
             Level = 1;
             Score = 0;
             Lives = 3;
+        }
+
+        public static void GoToMainMenu()
+        {
+            SceneManager.LoadScene("Menu");
         }
 
         public static void StartGame()
@@ -64,7 +72,16 @@ namespace SpaceInvaders
         public static void LoseGame()
         {
             Lives--;
-            SceneManager.LoadScene("Transition");
+            if (Lives <= 0)
+            {
+                if(Score > MaxScore) MaxScore = Score;
+                
+                SceneManager.LoadScene("GameOver");
+            }
+            else
+            {
+                SceneManager.LoadScene("Transition");
+            }
         }
     }
 }

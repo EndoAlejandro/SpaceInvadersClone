@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SpaceInvaders.Core;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace SpaceInvaders.Enemies
 {
@@ -58,12 +60,22 @@ namespace SpaceInvaders.Enemies
             Enemy.OnDeath += EnemyOnDeath;
         }
 
+        private void OnDestroy()
+        {
+            Enemy.OnDeath -= EnemyOnDeath;
+        }
+
         // When an enemy dies is removed from the enemy collection.
         private void EnemyOnDeath(Enemy enemy)
         {
             _enemies?.Remove(enemy);
             var t = _difficultyCurve.Evaluate(1 - _enemies.Count / (float)_enemiesAmount);
             _timeBetweenMovement = Mathf.Lerp(_minTimeBetweenMovement, _maxTimeBetweenMovement, t);
+
+            if (_enemies.Count == 0)
+            {
+                GameManager.WinGame();
+            }
         }
 
         // Create the enemies from a pool.
