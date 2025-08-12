@@ -8,15 +8,34 @@ namespace SpaceInvaders.Enemies
     {
         [SerializeField] private Vector2Int _enemiesMatrixSize = new Vector2Int(8, 5);
         [SerializeField] private Vector2 _distance = new Vector2(.55f, .5f);
+
         [Space]
         [SerializeField] private Enemy _enemyPrefab;
-        [SerializeField] private Enemy _extraEnemyPrefab;
+
+        [SerializeField] private SpecialEnemy _specialEnemyPrefab;
+        [SerializeField] private float _specialEnemySpawnOffset;
+
         [Space]
         [SerializeField] private EnemyStatsSo _yellowEnemy;
+
         [SerializeField] private EnemyStatsSo _greenEnemy;
         [SerializeField] private EnemyStatsSo _redEnemy;
 
-        public List<Enemy> Spawn()
+        private SpecialEnemy _spawnedSpecialEnemy;
+
+        public SpecialEnemy SpawnSpecialEnemy()
+        {
+            if (_spawnedSpecialEnemy == null)
+            {
+                _spawnedSpecialEnemy = Instantiate(_specialEnemyPrefab);
+            }
+
+            _spawnedSpecialEnemy.gameObject.SetActive(true);
+            _spawnedSpecialEnemy.Setup(transform, 5f, _specialEnemySpawnOffset);
+            return _spawnedSpecialEnemy;
+        }
+
+        public List<Enemy> SpawnBaseEnemies()
         {
             var enemies = new List<Enemy>();
             var enemiesAmount = _enemiesMatrixSize.x + _enemiesMatrixSize.y;
@@ -45,7 +64,7 @@ namespace SpaceInvaders.Enemies
                     enemies.Add(pooledEnemy);
                 }
             }
-            
+
             return enemies;
         }
     }

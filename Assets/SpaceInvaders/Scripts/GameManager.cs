@@ -82,6 +82,13 @@ namespace SpaceInvaders
             {
                 SceneManager.LoadScene("Transition");
             }
+            
+        }
+
+        public static void AddScore(int score)
+        {
+            Score += score;
+            Debug.Log(Score);
         }
     }
 }

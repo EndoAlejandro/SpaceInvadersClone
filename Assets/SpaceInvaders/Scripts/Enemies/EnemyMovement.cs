@@ -19,7 +19,7 @@ namespace SpaceInvaders.Enemies
         private void Awake()
         {
             _timeBetweenMovement = _minTimeBetweenMovement;
-            Enemy.OnDeath += EnemyOnDeath;
+            BaseEnemy.OnDeath += EnemyOnDeath;
         }
 
         private void Update()
@@ -59,7 +59,7 @@ namespace SpaceInvaders.Enemies
             }
         }
 
-        private void EnemyOnDeath(Enemy enemy)
+        private void EnemyOnDeath(BaseEnemy enemy)
         {
             var t = _difficultyCurve.Evaluate(1 - EnemiesController.Enemies.Count / (float)EnemiesController.EnemiesAmount);
             _timeBetweenMovement = Mathf.Lerp(_minTimeBetweenMovement, _maxTimeBetweenMovement, t);
@@ -67,7 +67,7 @@ namespace SpaceInvaders.Enemies
 
         private void OnDestroy()
         {
-            Enemy.OnDeath -= EnemyOnDeath;
+            BaseEnemy.OnDeath -= EnemyOnDeath;
         }
     }
 }
