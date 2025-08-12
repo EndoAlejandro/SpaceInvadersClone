@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.UI
 {
     public class TransitionUI : MonoBehaviour
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 namespace SpaceInvaders.Core
@@ -7,12 +8,18 @@ namespace SpaceInvaders.Core
     [Serializable]
     public class AudioData
     {
-        [SerializeField] private AudioClip[] _audioClip;
+        [field: SerializeField] public AudioMixerGroup AudioMixerGroup { get; private set; }
+
+        [field: SerializeField] public bool Loop { get; private set; }
+
         [Range(0f, 1f)] [SerializeField] private float _maxPitchVariation;
+
+        [Space]
+        [SerializeField] private AudioClip[] _audioClip;
 
         private int _previousIndex;
 
-        public AudioClip GetSound()
+        public AudioClip GetClip()
         {
             if (_audioClip.Length == 0) return null;
             if (_audioClip.Length == 1) return _audioClip[0];

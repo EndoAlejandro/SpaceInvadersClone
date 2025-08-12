@@ -1,4 +1,5 @@
-﻿using SpaceInvaders.Input;
+﻿using System;
+using SpaceInvaders.Input;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,6 +7,8 @@ namespace SpaceInvaders
 {
     public static class GameManager
     {
+        public static event Action<int> OnScoreUpdated;
+        
         private static InputReader _input;
 
         public static InputReader Input => _input ??= CreateInputReader();
@@ -32,7 +35,7 @@ namespace SpaceInvaders
             get => PlayerPrefs.GetInt("Score", 0);
             private set => PlayerPrefs.SetInt("Score", value);
         }
-        
+
         private static InputReader CreateInputReader()
         {
             var inputReader = new InputReader();
@@ -89,7 +92,7 @@ namespace SpaceInvaders
         public static void AddScore(int score)
         {
             Score += score;
-            Debug.Log(Score);
+            OnScoreUpdated?.Invoke(Score);
         }
     }
 }

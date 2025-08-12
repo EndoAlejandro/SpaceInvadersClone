@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 using static SpaceInvaders.Enemies.EnemyController;
 
@@ -6,6 +7,8 @@ namespace SpaceInvaders.Enemies
 {
     public class EnemyMovement : MonoBehaviour
     {
+        public static event Action OnMove; 
+        
         [SerializeField] private Vector2 _moveDistance = new Vector2(.5f, .5f);
 
         [Space]
@@ -48,6 +51,8 @@ namespace SpaceInvaders.Enemies
             {
                 transform.position += Vector3.right * _moveDistance.x;
             }
+            
+            OnMove?.Invoke();
 
             Enemy enemy = EnemyController.Enemies.FirstOrDefault(enemy => enemy.IsTouchingBottomLimit());
             if (enemy)

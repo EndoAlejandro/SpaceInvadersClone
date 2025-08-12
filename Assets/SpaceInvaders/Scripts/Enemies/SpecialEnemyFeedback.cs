@@ -3,15 +3,12 @@ using UnityEngine;
 
 namespace SpaceInvaders.Enemies
 {
-    public class SpecialEnemyFeedback : BaseFeedback
+    public class SpecialEnemyFeedback : MonoBehaviour
     {
         [SerializeField] private AudioData _audioData;
 
         private void OnEnable()
         {
-            _audioSource.loop = true;
-            _audioSource.playOnAwake = true;
-            PlaySound(_audioData);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using SpaceInvaders.Input;
 using UnityEngine;
 
@@ -7,6 +8,10 @@ namespace SpaceInvaders.Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour
     {
+        public static event Action OnDeath;
+
+        [SerializeField] private Transform _visuals;
+        
         [SerializeField] private float _acceleration = 1f;
         [SerializeField] private float _deceleration = 1f;
         [SerializeField] private float _maxSpeed = 1f;
@@ -20,6 +25,7 @@ namespace SpaceInvaders.Player
         private void Awake()
         {
             _input = GameManager.Input;
+            _input.EnableMainInput();
 
             _collider = GetComponent<BoxCollider2D>();
             _rigidbody = GetComponent<Rigidbody2D>();
@@ -59,7 +65,13 @@ namespace SpaceInvaders.Player
 
         public void Kill()
         {
-            GameManager.LoseGame();
+            OnDeath?.Invoke();
+            _input.DisableMainInput();
+            _collider.enabled = false;
+            _visuals.gameObject.SetActive(false);
+            Invoke(nameof(LoseGame), 2f);
         }
+        
+        private void LoseGame() => GameManager.LoseGame();
     }
 }

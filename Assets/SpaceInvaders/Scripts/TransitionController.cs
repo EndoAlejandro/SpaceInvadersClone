@@ -1,3 +1,5 @@
+using SpaceInvaders.Core;
+using SpaceInvaders.UI;
 using UnityEngine;
 
 namespace SpaceInvaders
@@ -6,6 +8,9 @@ namespace SpaceInvaders
     {
         [SerializeField] private float _loadTime = 5f;
         [SerializeField] private TransitionUI _transitionUI;
+        
+        [SerializeField] private AudioData _audioData;
+        [SerializeField] private AudioSource _audioSource;
 
         private float _timer;
 
@@ -15,6 +20,8 @@ namespace SpaceInvaders
         private void Awake()
         {
             _transitionUI.Setup(GameManager.Level, GameManager.Lives);
+            _audioSource.pitch = _audioData.GetRandomPitch(1f);
+            _audioSource.PlayOneShot(_audioData.GetClip());
         }
 
         private void Update()
