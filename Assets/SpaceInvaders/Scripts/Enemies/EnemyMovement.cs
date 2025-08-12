@@ -1,0 +1,73 @@
+﻿using System.Linq;
+using UnityEngine;
+
+namespace SpaceInvaders.Enemies
+{
+    public class EnemyMovement : MonoBehaviour
+    {
+        [SerializeField] private Vector2 _moveDistance = new Vector2(.5f, .5f);
+        [Space]
+        [SerializeField] private float _minTimeBetweenMovement = 1f;
+        [SerializeField] private float _maxTimeBetweenMovement = .25f;
+        [Space]
+        [SerializeField] private AnimationCurve _difficultyCurve;
+
+        private float _timeBetweenMovement;
+        private float _movementTimer;
+        private bool _touchingBorder;
+        
+        private void Awake()
+        {
+            _timeBetweenMovement = _minTimeBetweenMovement;
+            Enemy.OnDeath += EnemyOnDeath;
+        }
+
+        private void Update()
+        {
+            _movementTimer += Time.deltaTime;
+            if (_movementTimer < _timeBetweenMovement) return;
+
+            // Check if any enemy is touching the safe area.
+            EdgeCheck();
+
+            // Vertical Movement.
+            if (_touchingBorder)
+            {
+                _touchingBorder = false;
+                transform.position += Vector3.down * _moveDistance.y;
+            }
+            // Normal movement.
+            else
+            {
+                transform.position += Vector3.right * _moveDistance.x;
+            }
+        }
+        
+        private void EdgeCheck()
+        {
+            if (!_touchingBorder)
+            {
+                var result = EnemiesController.Enemies.FirstOrDefault(enemy => enemy.WillTouchBorder(_moveDistance));
+                _movementTimer = 0;
+
+                // When an enemy is touching the safe area, chane movement to vertical and flip horizontal direction.
+                if (result != null)
+                {
+                    _touchingBorder = true;
+                    _moveDistance.x *= -1f;
+                }
+            }
+        }
+
+        private void EnemyOnDeath(Enemy enemy)
+        {
+            var t = _difficultyCurve.Evaluate(1 - EnemiesController.Enemies.Count / (float)EnemiesController.EnemiesAmount);
+            _timeBetweenMovement = Mathf.Lerp(_minTimeBetweenMovement, _maxTimeBetweenMovement, t);
+        }
+
+        private void OnDestroy()
+        {
+            Enemy.OnDeath -= EnemyOnDeath;
+        }
+    }
+}
