@@ -38,20 +38,18 @@ namespace SpaceInvaders.Player
             }
 
             var safeSpace = 0.1f;
-            var leftEdge = Camera.main.ViewportToWorldPoint(Vector2.right * safeSpace).x;
-            var rightEdge = Camera.main.ViewportToWorldPoint(Vector2.right * (1f - safeSpace)).x;
 
             // Side checks.
-            if (transform.position.x < leftEdge)
+            if (transform.position.x < GameManager.LeftEdge)
             {
-                _rigidbody.MovePosition(new Vector3(leftEdge, transform.position.y, transform.position.z));
+                _rigidbody.MovePosition(new Vector3(GameManager.LeftEdge, transform.position.y, transform.position.z));
                 _velocity = Vector3.zero;
                 return;
             }
             
-            if (transform.position.x > rightEdge)
+            if (transform.position.x > GameManager.RightEdge)
             {
-                _rigidbody.MovePosition(new Vector3(rightEdge, transform.position.y, transform.position.z));
+                _rigidbody.MovePosition(new Vector3(GameManager.RightEdge, transform.position.y, transform.position.z));
                 _velocity = Vector3.zero;
                 return;
             }

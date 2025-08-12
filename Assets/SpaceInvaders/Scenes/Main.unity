@@ -556,6 +556,8 @@ MonoBehaviour:
   _extraEnemyPrefab: {fileID: 8987631067344504861, guid: dfe36c1c73c8c68498abd8470ee5d32b, type: 3}
   _enemiesMatrixSize: {x: 9, y: 5}
   _distance: {x: 0.5, y: 0.5}
+  _moveDistance: {x: 0.25, y: 0.5}
+  _timeBetweenMovement: 1
 --- !u!4 &1909607851
 Transform:
   m_ObjectHideFlags: 0
