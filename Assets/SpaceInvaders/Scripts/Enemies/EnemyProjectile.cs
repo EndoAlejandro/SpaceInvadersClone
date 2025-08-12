@@ -1,4 +1,5 @@
-﻿using SpaceInvaders.Core;
+﻿using System;
+using SpaceInvaders.Core;
 using SpaceInvaders.Player;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace SpaceInvaders.Enemies
     [RequireComponent(typeof(Rigidbody2D))]
     public class EnemyProjectile : PoolableMonoBehaviour
     {
+        public static event Action OnShieldHit;
+        
         private BoxCollider2D _collider;
         private Rigidbody2D _rigidbody;
         private float _speed;
@@ -38,13 +41,14 @@ namespace SpaceInvaders.Enemies
                 player.Kill();
                 DestroyProjectile();
             }
-            else if (other.TryGetComponent(out Projectile _))
+            else if (other.TryGetComponent(out PlayerProjectile _))
             {
                 DestroyProjectile();
             }
             else if (other.TryGetComponent(out Shield shield))
             {
                 shield.DestroyShieldTile(_collider);
+                OnShieldHit?.Invoke();
                 DestroyProjectile();
             }
         }

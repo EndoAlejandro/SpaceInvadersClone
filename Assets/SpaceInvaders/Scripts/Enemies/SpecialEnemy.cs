@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace SpaceInvaders.Enemies
@@ -50,6 +48,7 @@ namespace SpaceInvaders.Enemies
             int randomIndex = Random.Range(0, _specialEnemyPoints.Length);
             GameManager.AddScore(_specialEnemyPoints[randomIndex]);
             gameObject.SetActive(false);
+            OnDeath?.Invoke(this);
         }
     }
 }

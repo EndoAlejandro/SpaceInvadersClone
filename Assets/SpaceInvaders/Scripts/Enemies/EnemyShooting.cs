@@ -7,6 +7,8 @@ namespace SpaceInvaders.Enemies
 {
     public class EnemyShooting : MonoBehaviour
     {
+        public static event Action OnShoot;
+        
         [SerializeField] private EnemyProjectile _projectilePrefab;
         [SerializeField] private float _projectileSpeed = 1f;
         [SerializeField] private float _minTimeBetweenShooting;
@@ -39,6 +41,7 @@ namespace SpaceInvaders.Enemies
             int randomIndex = Random.Range(0, EnemyController.Enemies.Count);
             var pooledBullet = _bulletsPool.PoolObject<EnemyProjectile>();
             pooledBullet.Setup(EnemyController.Enemies[randomIndex].transform.position, _projectileSpeed);
+            OnShoot?.Invoke();
         }
     }
 }

@@ -5,7 +5,7 @@ namespace SpaceInvaders.Enemies
 {
     public abstract class BaseEnemy : PoolableMonoBehaviour
     {
-        public static event Action<BaseEnemy> OnDeath;
+        public static Action<BaseEnemy> OnDeath;
 
         private int _points;
         
