@@ -2,6 +2,7 @@
 using SpaceInvaders.Core;
 using SpaceInvaders.Enemies;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace SpaceInvaders.Player
 {
@@ -9,12 +10,14 @@ namespace SpaceInvaders.Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class Projectile : PoolableMonoBehaviour
     {
+        private BoxCollider2D _collider;
         private Rigidbody2D _rigidbody;
         private float _speed;
         private Action _onDestroyedCallback;
 
         public void Setup(Vector3 initialPosition, float speed, Action onDestroyedCallback)
         {
+            _collider ??= GetComponent<BoxCollider2D>();
             _rigidbody ??= GetComponent<Rigidbody2D>();
             _rigidbody.MovePosition(initialPosition);
             transform.position = initialPosition;
@@ -44,6 +47,11 @@ namespace SpaceInvaders.Player
             }
             else if (other.TryGetComponent(out EnemyProjectile _))
             {
+                DestroyProjectile();
+            }
+            else if (other.TryGetComponent(out Shield shield))
+            {
+                shield.DestroyShieldTile(_collider);
                 DestroyProjectile();
             }
         }

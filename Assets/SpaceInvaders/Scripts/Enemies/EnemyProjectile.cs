@@ -4,14 +4,17 @@ using UnityEngine;
 
 namespace SpaceInvaders.Enemies
 {
+    [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(Rigidbody2D))]
     public class EnemyProjectile : PoolableMonoBehaviour
     {
+        private BoxCollider2D _collider;
         private Rigidbody2D _rigidbody;
         private float _speed;
 
         public void Setup(Vector3 position, float speed)
         {
+            _collider ??= GetComponent<BoxCollider2D>();
             _rigidbody ??= GetComponent<Rigidbody2D>();
 
             transform.position = position;
@@ -37,6 +40,11 @@ namespace SpaceInvaders.Enemies
             }
             else if (other.TryGetComponent(out Projectile _))
             {
+                DestroyProjectile();
+            }
+            else if (other.TryGetComponent(out Shield shield))
+            {
+                shield.DestroyShieldTile(_collider, true);
                 DestroyProjectile();
             }
         }
