@@ -33,11 +33,11 @@ namespace SpaceInvaders.Player
             {
                 DestroyProjectile();
             }
+            _rigidbody.MovePosition(transform.position + Vector3.up * (_speed * Time.fixedDeltaTime));
         }
 
         private void FixedUpdate()
         {
-            _rigidbody.MovePosition(transform.position + Vector3.up * (_speed * Time.fixedDeltaTime));
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -53,7 +53,7 @@ namespace SpaceInvaders.Player
             }
             else if (other.TryGetComponent(out Shield shield))
             {
-                shield.DestroyShieldTile(_collider);
+                shield.DestroyShieldTile(_rigidbody.position);
                 OnShieldHit?.Invoke();
                 DestroyProjectile();
             }

@@ -10,8 +10,6 @@ namespace SpaceInvaders.Core
     {
         [field: SerializeField] public AudioMixerGroup AudioMixerGroup { get; private set; }
 
-        [field: SerializeField] public bool Loop { get; private set; }
-
         [Range(0f, 1f)] [SerializeField] private float _maxPitchVariation;
 
         [Space]

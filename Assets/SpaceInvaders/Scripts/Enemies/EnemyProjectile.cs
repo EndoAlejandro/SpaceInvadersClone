@@ -10,7 +10,7 @@ namespace SpaceInvaders.Enemies
     public class EnemyProjectile : PoolableMonoBehaviour
     {
         public static event Action OnShieldHit;
-        
+
         private BoxCollider2D _collider;
         private Rigidbody2D _rigidbody;
         private float _speed;
@@ -47,7 +47,7 @@ namespace SpaceInvaders.Enemies
             }
             else if (other.TryGetComponent(out Shield shield))
             {
-                shield.DestroyShieldTile(_collider);
+                shield.DestroyShieldTile(_rigidbody.position);
                 OnShieldHit?.Invoke();
                 DestroyProjectile();
             }

@@ -193,11 +193,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f5a282c73d421287874484cc79bcff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioSource: {fileID: 279215960034682950}
   _audioData:
+    <AudioMixerGroup>k__BackingField: {fileID: 539103375096328681, guid: ccfd0309c91202145aef16c7407dd311, type: 2}
+    _maxPitchVariation: 0.1
     _audioClip:
     - {fileID: 8300000, guid: 06756c64a07a21342a4fbfd79c17af96, type: 3}
-    _maxPitchVariation: 0.1
+  _audioSource: {fileID: 279215960034682950}
 --- !u!1 &9119008557701681644
 GameObject:
   m_ObjectHideFlags: 0
