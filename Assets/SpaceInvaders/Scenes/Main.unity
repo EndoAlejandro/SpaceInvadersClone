@@ -3060,7 +3060,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveDistance: {x: 0.25, y: 0.5}
-  _minTimeBetweenMovement: 1
+  _minTimeBetweenMovement: 1.5
   _maxTimeBetweenMovement: 0.25
   _difficultyCurve:
     serializedVersion: 2
